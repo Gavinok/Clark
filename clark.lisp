@@ -1,8 +1,8 @@
 ;; https://github.com/weavejester/compojure/wiki/Destructuring-Syntax
 ;; https://github.com/ring-clojure/ring/wiki/Concepts#requests
-;;;; compojure-clone.lisp
+;;;; clark.lisp
 
-(in-package #:compojure-clone)
+(in-package #:clark)
 
 (defvar *method-handlers* `(:GET () :POST () :PUT () :DELETE ())
   "Contains a list of http methods and a list of functions to call based

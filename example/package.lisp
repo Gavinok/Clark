@@ -2,6 +2,6 @@
 
 (uiop:define-package example-site
   (:use :cl)
-  (:import-from :compojure-clone
+  (:import-from :clark
    :defroutes))
 

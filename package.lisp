@@ -1,6 +1,6 @@
 ;;;; package.lisp
 
-(uiop:define-package #:compojure-clone
+(uiop:define-package #:clark
   (:use #:cl)
   (:import-from :alexandria-2
                 #:alist-plist)
@@ -17,7 +17,7 @@
 
 (uiop:define-package #:handler
   (:use #:cl)
-  (:import-from #:compojure-clone
+  (:import-from #:clark
                 #:defroutes)
   (:import-from #:serapeum
                 #:->)

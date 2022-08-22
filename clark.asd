@@ -1,20 +1,20 @@
-;;;; compojure-clone.asd
+;;;; clark.asd
 
-(asdf:defsystem #:compojure-clone
-  :description "Describe compojure-clone here"
+(asdf:defsystem #:clark
+  :description "Describe clark here"
   :author "Gavin Jaeger-Freeborn"
   :license "MIT"
   :version "0.0.1"
   :depends-on (#:clack #:alexandria #:serapeum #:cl-ppcre)
   :components ((:file "package")
-               (:file "compojure-clone")
-               (:file "handler" :depends-on ("compojure-clone"))))
+               (:file "clark")
+               (:file "handler" :depends-on ("clark"))))
 
-(asdf:defsystem #:compojure-clone-test
+(asdf:defsystem #:clark-test
   :description "Test Suite For The Compojure-Clone Project"
   :author "Gavin Jaeger-Freeborn"
   :license "MIT"
-  :depends-on (#:compojure-clone #:fiveam)
+  :depends-on (#:clark #:fiveam)
   :components ((:module "t"
                 :serial t
                 :components

@@ -1,5 +1,5 @@
 (defpackage core.test
-  (:use :cl :compojure-clone :handler :fiveam))
+  (:use :cl :clark :handler :fiveam))
 
 (in-package #:core.test)
 
@@ -7,32 +7,32 @@
 
 
 (5am:test valid-routes
-  (5am:finishes (compojure-clone::routes
+  (5am:finishes (clark::routes
                   (GET "/hello"      nil       "hello")))
-  (5am:finishes (compojure-clone::routes
+  (5am:finishes (clark::routes
                   (GET "/hello"      ()       "hello")))
-  (5am:finishes (compojure-clone::routes
+  (5am:finishes (clark::routes
                   (GET "/fullthing"  env      (format nil "~a" env))))
-  (5am:finishes (compojure-clone::routes
+  (5am:finishes (clark::routes
                   (GET "/nope"       (x)      (format nil x))))
-  (5am:finishes (compojure-clone::routes
+  (5am:finishes (clark::routes
                   (GET "/long"       (x y z)  (format nil "~a"
                                                       (+ (parse-integer x)
                                                          (parse-integer y)
                                                          (parse-integer z)))))))
 
 (5am:test invalid-routes
-  (5am:signals TYPE-ERROR (macroexpand-1 `(compojure-clone::routes
+  (5am:signals TYPE-ERROR (macroexpand-1 `(clark::routes
                                        (GET "/hello"      "hello"   "hello"))))
-  (5am:signals TYPE-ERROR (macroexpand-1 `(compojure-clone::routes
+  (5am:signals TYPE-ERROR (macroexpand-1 `(clark::routes
                                        (YEET "/hello"      ()       "hello"))))
-  (5am:signals ERROR (eval `(compojure-clone::routes
+  (5am:signals ERROR (eval `(clark::routes
                               (GET "/hello"      (y))))))
 
 (5am:test request-responses
   (5am:is (string=
            (car (third (funcall (handler:site
-                                 (compojure-clone::routes
+                                 (clark::routes
                                    (GET "/noargs" () "hello")))
                                 (list
                                  :REQUEST-METHOD :GET
@@ -42,7 +42,7 @@
            "hello"))
   (5am:is (string=
            (car (third (funcall (handler:site
-                                 (compojure-clone::routes
+                                 (clark::routes
                                    (GET "/twoargs" (x y)
                                         (+ (parse-integer x) (parse-integer y)))))
                                 (list
@@ -53,7 +53,7 @@
            "3"))
   (5am:is (string=
            (car (third (funcall (handler:site
-                                 (compojure-clone::routes
+                                 (clark::routes
                                    (GET "/fullenv" request (format nil "~a" request))))
                                 (list
                                  :REQUEST-METHOD :GET
@@ -67,7 +67,7 @@
                     :REQUEST-URI "/fullenv"
                     :QUERY-STRING "x=1&y=2"))))
   (5am:is (string=
-           (let ((routes  (compojure-clone::routes
+           (let ((routes  (clark::routes
                             (GET "/fullenv" request (format nil "~a" request)))))
              (car (third (funcall (handler:site routes)
                                   (list
@@ -83,7 +83,7 @@
                     :QUERY-STRING "x=1&y=2"))))
   (5am:is (string=
            (progn
-             (compojure-clone::defroutes *routes*
+             (clark::defroutes *routes*
                (GET "/fullenv" request (format nil "~a" request)))
              (car (third (funcall (handler:site *routes*)
                                   (list

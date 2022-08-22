@@ -52,22 +52,22 @@ destructure the query string to match the expression"
                 ("Page could not be found"))))))
 
 
-(->  inner-request-handler (Clack-Env) List)
-(defun inner-request-handler (env)
-  (funcall (site
-            (compojure-clone::routes
-              (GET "/hello"      ()       "hello")
-              (GET "/nope/world" ()       "Nope World")
-              (GET "/fullthing"  env      (format nil "~a" env))
-              (GET "/nope"       (x)      (format nil x))
-              (GET "/long"       (x y z)  (format nil "<h2>~a</h2>"
-                                                  (+ (parse-integer x)
-                                                     (parse-integer y)
-                                                     (parse-integer z))))))
-           env))
+;; (->  inner-request-handler (Clack-Env) List)
+;; (defun inner-request-handler (env)
+;;   (funcall (site
+;;             (clark::routes
+;;               (GET "/hello"      ()       "hello")
+;;               (GET "/nope/world" ()       "Nope World")
+;;               (GET "/fullthing"  env      (format nil "~a" env))
+;;               (GET "/nope"       (x)      (format nil x))
+;;               (GET "/long"       (x y z)  (format nil "<h2>~a</h2>"
+;;                                                   (+ (parse-integer x)
+;;                                                      (parse-integer y)
+;;                                                      (parse-integer z))))))
+;;            env))
 
-(defun request-handler (env)
-  (inner-request-handler env))
+;; (defun request-handler (env)
+;;   (inner-request-handler env))
 #|
 ;; create a basic app
 (defvar *app* #'request-handler)
