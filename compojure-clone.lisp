@@ -83,7 +83,7 @@ evaluate the given EXPRESSION"
           (alist-plist
            (mapcar
             (lambda (method)
-              (~>> ; ->> But from alexandria
+              (~>>
                formatted-routes
                ;; Match the routes against the stored method
                (remove-if-not (lambda (route) (eql (car route) method)))
