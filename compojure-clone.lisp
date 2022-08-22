@@ -100,7 +100,7 @@ evaluate the given EXPRESSION"
   (define-all-routes routes))
 
 (defmacro defroutes (symbol &body routes)
-  `(defvar ,symbol (define-all-routes routes)))
+  `(defparameter ,symbol ,(define-all-routes routes)))
 
 #|
 ;;; Example usage

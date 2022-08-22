@@ -23,4 +23,4 @@
                 #:->)
   (:import-from #:ppcre
                 #:split)
-  (:export #:generate-request-handler))
+  (:export #:site))

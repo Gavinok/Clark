@@ -29,9 +29,9 @@
   (5am:signals ERROR (eval `(compojure-clone::routes
                               (GET "/hello"      (y))))))
 
-(5am:test generate-request-handler
+(5am:test request-responses
   (5am:is (string=
-           (car (third (funcall (generate-request-handler
+           (car (third (funcall (handler:site
                                  (compojure-clone::routes
                                    (GET "/noargs" () "hello")))
                                 (list
@@ -41,7 +41,7 @@
                                  :QUERY-STRING NIL))))
            "hello"))
   (5am:is (string=
-           (car (third (funcall (generate-request-handler
+           (car (third (funcall (handler:site
                                  (compojure-clone::routes
                                    (GET "/twoargs" (x y)
                                         (+ (parse-integer x) (parse-integer y)))))
@@ -52,7 +52,7 @@
                                  :QUERY-STRING "x=1&y=2"))))
            "3"))
   (5am:is (string=
-           (car (third (funcall (generate-request-handler
+           (car (third (funcall (handler:site
                                  (compojure-clone::routes
                                    (GET "/fullenv" request (format nil "~a" request))))
                                 (list
@@ -69,7 +69,7 @@
   (5am:is (string=
            (let ((routes  (compojure-clone::routes
                             (GET "/fullenv" request (format nil "~a" request)))))
-             (car (third (funcall (generate-request-handler routes)
+             (car (third (funcall (handler:site routes)
                                   (list
                                    :REQUEST-METHOD :GET
                                    :PATH-INFO "/fullenv"
@@ -83,9 +83,9 @@
                     :QUERY-STRING "x=1&y=2"))))
   (5am:is (string=
            (progn
-             (compojure-clone::defroutes routes
+             (compojure-clone::defroutes *routes*
                (GET "/fullenv" request (format nil "~a" request)))
-             (car (third (funcall (generate-request-handler routes)
+             (car (third (funcall (handler:site *routes*)
                                   (list
                                    :REQUEST-METHOD :GET
                                    :PATH-INFO "/fullenv"

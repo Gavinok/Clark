@@ -20,8 +20,8 @@ destructure the query string to match the expression"
 
 (deftype Clack-Env () `Cons)
 
-(-> generate-request-handler (List) (-> (Clack-Env) List))
-(defun generate-request-handler (route-list)
+(-> site (List) (-> (Clack-Env) List))
+(defun site (route-list)
   (lambda (env)
     (format t "~a~%" env)
     (let* ((method-type   (the Keyword
@@ -54,7 +54,7 @@ destructure the query string to match the expression"
 
 (->  inner-request-handler (Clack-Env) List)
 (defun inner-request-handler (env)
-  (funcall (generate-request-handler
+  (funcall (site
             (compojure-clone::routes
               (GET "/hello"      ()       "hello")
               (GET "/nope/world" ()       "Nope World")
