@@ -27,6 +27,8 @@ integration with Clack is still being figured out as well.
                                          (parse-integer z)))))
 ```
 
+For a small example project please see the example directory
+
 ## License
 
 MIT
