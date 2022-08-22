@@ -31,17 +31,20 @@
 
 (5am:test generate-request-handler
   (5am:is (string=
-           (car (third (funcall (generate-request-handler (compojure-clone::routes
-                                                       (GET "/noargs" () "hello")))
-                           (list
-                            :REQUEST-METHOD :GET
-                            :PATH-INFO "/noargs"
-                            :REQUEST-URI "/noargs"
-                            :QUERY-STRING NIL))))
+           (car (third (funcall (generate-request-handler
+                                 (compojure-clone::routes
+                                   (GET "/noargs" () "hello")))
+                                (list
+                                 :REQUEST-METHOD :GET
+                                 :PATH-INFO "/noargs"
+                                 :REQUEST-URI "/noargs"
+                                 :QUERY-STRING NIL))))
            "hello"))
   (5am:is (string=
-           (car (third (funcall (generate-request-handler (compojure-clone::routes
-                                                            (GET "/twoargs" (x y) (+ (parse-integer x) (parse-integer y)))))
+           (car (third (funcall (generate-request-handler
+                                 (compojure-clone::routes
+                                   (GET "/twoargs" (x y)
+                                        (+ (parse-integer x) (parse-integer y)))))
                                 (list
                                  :REQUEST-METHOD :GET
                                  :PATH-INFO "/twoargs"
@@ -49,13 +52,45 @@
                                  :QUERY-STRING "x=1&y=2"))))
            "3"))
   (5am:is (string=
-           (car (third (funcall (generate-request-handler (compojure-clone::routes
-                                                            (GET "/fullenv" request (format nil "~a" request))))
+           (car (third (funcall (generate-request-handler
+                                 (compojure-clone::routes
+                                   (GET "/fullenv" request (format nil "~a" request))))
                                 (list
                                  :REQUEST-METHOD :GET
                                  :PATH-INFO "/fullenv"
                                  :REQUEST-URI "/fullenv"
                                  :QUERY-STRING "x=1&y=2"))))
+           (format nil "~a"
+                   (list
+                    :REQUEST-METHOD :GET
+                    :PATH-INFO "/fullenv"
+                    :REQUEST-URI "/fullenv"
+                    :QUERY-STRING "x=1&y=2"))))
+  (5am:is (string=
+           (let ((routes  (compojure-clone::routes
+                            (GET "/fullenv" request (format nil "~a" request)))))
+             (car (third (funcall (generate-request-handler routes)
+                                  (list
+                                   :REQUEST-METHOD :GET
+                                   :PATH-INFO "/fullenv"
+                                   :REQUEST-URI "/fullenv"
+                                   :QUERY-STRING "x=1&y=2")))))
+           (format nil "~a"
+                   (list
+                    :REQUEST-METHOD :GET
+                    :PATH-INFO "/fullenv"
+                    :REQUEST-URI "/fullenv"
+                    :QUERY-STRING "x=1&y=2"))))
+  (5am:is (string=
+           (progn
+             (compojure-clone::defroutes routes
+               (GET "/fullenv" request (format nil "~a" request)))
+             (car (third (funcall (generate-request-handler routes)
+                                  (list
+                                   :REQUEST-METHOD :GET
+                                   :PATH-INFO "/fullenv"
+                                   :REQUEST-URI "/fullenv"
+                                   :QUERY-STRING "x=1&y=2")))))
            (format nil "~a"
                    (list
                     :REQUEST-METHOD :GET
