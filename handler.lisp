@@ -21,7 +21,7 @@ destructure the query string to match the expression"
 (deftype Clack-Env () `Cons)
 
 (-> generate-request-handler (List) (-> (Clack-Env) List))
-(defun generate-request-handler (route-plist)
+(defun generate-request-handler (route-list)
   (lambda (env)
     (format t "~a~%" env)
     (let* ((method-type   (the Keyword
@@ -30,7 +30,7 @@ destructure the query string to match the expression"
                                (getf env :path-info)))
            (query-str     (the (or String Null)
                                (getf env :query-string)))
-           (method-routes (getf route-plist method-type))
+           (method-routes (getf route-list method-type))
            ;; Look up the apropriate list for this path
            (route         (assoc path
                                  method-routes

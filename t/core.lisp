@@ -1,5 +1,5 @@
 (defpackage core.test
-  (:use :cl :compojure-clone :fiveam))
+  (:use :cl :compojure-clone :handler :fiveam))
 
 (in-package #:core.test)
 
@@ -28,3 +28,37 @@
                                        (YEET "/hello"      ()       "hello"))))
   (5am:signals ERROR (eval `(compojure-clone::routes
                               (GET "/hello"      (y))))))
+
+(5am:test generate-request-handler
+  (5am:is (string=
+           (car (third (funcall (generate-request-handler (compojure-clone::routes
+                                                       (GET "/noargs" () "hello")))
+                           (list
+                            :REQUEST-METHOD :GET
+                            :PATH-INFO "/noargs"
+                            :REQUEST-URI "/noargs"
+                            :QUERY-STRING NIL))))
+           "hello"))
+  (5am:is (string=
+           (car (third (funcall (generate-request-handler (compojure-clone::routes
+                                                            (GET "/twoargs" (x y) (+ (parse-integer x) (parse-integer y)))))
+                                (list
+                                 :REQUEST-METHOD :GET
+                                 :PATH-INFO "/twoargs"
+                                 :REQUEST-URI "/twoargs"
+                                 :QUERY-STRING "x=1&y=2"))))
+           "3"))
+  (5am:is (string=
+           (car (third (funcall (generate-request-handler (compojure-clone::routes
+                                                            (GET "/fullenv" request (format nil "~a" request))))
+                                (list
+                                 :REQUEST-METHOD :GET
+                                 :PATH-INFO "/fullenv"
+                                 :REQUEST-URI "/fullenv"
+                                 :QUERY-STRING "x=1&y=2"))))
+           (format nil "~a"
+                   (list
+                    :REQUEST-METHOD :GET
+                    :PATH-INFO "/fullenv"
+                    :REQUEST-URI "/fullenv"
+                    :QUERY-STRING "x=1&y=2")))))
