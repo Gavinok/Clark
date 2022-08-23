@@ -7,5 +7,5 @@
   :version "0.0.1"
   :depends-on (#:clark)
   :components ((:file "package")
-               (:file "example-site" :depends-on ("package"))))
+               (:file "example" :depends-on ("package"))))
 
