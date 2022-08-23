@@ -1,5 +1,4 @@
 # Clark
-### _Gavin Jaeger-Freeborn_
 
 This project is a clone
 [Compojure](https://github.com/weavejester/compojure) brought to
