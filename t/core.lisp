@@ -96,4 +96,54 @@
                     :REQUEST-METHOD :GET
                     :PATH-INFO "/fullenv"
                     :REQUEST-URI "/fullenv"
-                    :QUERY-STRING "x=1&y=2")))))
+                    :QUERY-STRING "x=1&y=2"))))
+  (5am:is (string=
+           (progn
+             (clark::defroutes *routes*
+               (GET "/fullenv/withname" request (format nil "~a" request)))
+             (car (third (funcall (handler:site *routes*)
+                                  (list
+                                   :REQUEST-METHOD :GET
+                                   :PATH-INFO "/fullenv/withname"
+                                   :REQUEST-URI "/fullenv/withname"
+                                   :QUERY-STRING "x=1&y=2")))))
+           (format nil "~a"
+                   (list
+                    :REQUEST-METHOD :GET
+                    :PATH-INFO "/fullenv/withname"
+                    :REQUEST-URI "/fullenv/withname"
+                    :QUERY-STRING "x=1&y=2"))))
+  (5am:is (string=
+           (progn
+             (clark::defroutes *routes*
+               (GET "/fullenv/" request (format nil "~a" "bad-case"))
+               (GET "/fullenv/withname" request (format nil "~a" request)))
+             (car (third (funcall (handler:site *routes*)
+                                  (list
+                                   :REQUEST-METHOD :GET
+                                   :PATH-INFO "/fullenv/withname"
+                                   :REQUEST-URI "/fullenv/withname"
+                                   :QUERY-STRING "x=1&y=2")))))
+           (format nil "~a"
+                   (list
+                    :REQUEST-METHOD :GET
+                    :PATH-INFO "/fullenv/withname"
+                    :REQUEST-URI "/fullenv/withname"
+                    :QUERY-STRING "x=1&y=2"))))
+  ;; (5am:is (string=
+  ;;          (let ((routes  (clark::routes
+  ;;                           (GET "/people/:name" (name)
+  ;;                                (format nil "Hello ~a" (name))))))
+  ;;            (car (third (funcall (handler:site routes)
+  ;;                                 (list
+  ;;                                  :REQUEST-METHOD :GET
+  ;;                                  :PATH-INFO "/fullenv"
+  ;;                                  :REQUEST-URI "/fullenv"
+  ;;                                  :QUERY-STRING "x=1&y=2")))))
+  ;;          (format nil "~a"
+  ;;                  (list
+  ;;                   :REQUEST-METHOD :GET
+  ;;                   :PATH-INFO "/fullenv"
+  ;;                   :REQUEST-URI "/fullenv"
+  ;;                   :QUERY-STRING "x=1&y=2"))))
+  )

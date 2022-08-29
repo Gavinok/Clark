@@ -28,9 +28,20 @@
 (defroutes *app-routes*
   (GET "/"           ()    "Hello World")
   (GET "/meetings"   ()    (meetings))
-  (GET "/calculator" ()    (calculator))
-  (GET "/add"        (x y) (format nil "~a" (+ (parse-integer x)
-                                               (parse-integer y)))))
+  (GET "/calculator" ()    (format nil
+                                   "
+<head>
+    <meta charset=\"utf-8\">
+    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">
+    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
+    <title>calculator</title>
+    </head> ~a
+  "
+                                   (calculator)))
+  (GET "/add"      (a y) (format nil "~a" (+ (parse-integer a)
+                                             (parse-integer y))))
+  (GET "/people/:name" (name)
+       (format nil "Hello ~a" (name))))
 (defvar *app* (handler:site *app-routes*))
 
 (defun stop-server ()
