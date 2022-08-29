@@ -38,7 +38,7 @@
     </head> ~a
   "
                                    (calculator)))
-  (GET "/add"      (a y) (format nil "~a" (+ (parse-integer a)
+  (GET "/add"      (x y) (format nil "~a" (+ (parse-integer x)
                                              (parse-integer y))))
   (GET "/people/:name" (name)
        (format nil "Hello ~a" (name))))
