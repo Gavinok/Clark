@@ -8,6 +8,8 @@
                                       :collect (random 24))
                                 #'<)))))
 (defun calculator ()
+  "A simple calculator page which can be used as an example of how to
+reach out to other "
   (format nil
           "
 <form action=\"/add\" method=\"GET\">
@@ -25,23 +27,21 @@
 </form>
 "))
 
+(defun adder (x y)
+  (format nil "~a" (+ (parse-integer x)
+                      (parse-integer y))))
+
 (defroutes *app-routes*
   (GET "/"           ()    "Hello World")
   (GET "/meetings"   ()    (meetings))
-  (GET "/calculator" ()    (format nil
-                                   "
-<head>
-    <meta charset=\"utf-8\">
-    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">
-    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
-    <title>calculator</title>
-    </head> ~a
-  "
+  (GET "/add"        (x y) (adder x y))
+  (GET "/calculator" ()    (format nil "<head><title>calculator</title></head>~a"
                                    (calculator)))
-  (GET "/add"      (x y) (format nil "~a" (+ (parse-integer x)
-                                             (parse-integer y))))
+
+  ;; TODO Implement wild cards
   (GET "/people/:name" (name)
        (format nil "Hello ~a" (name))))
+
 (defvar *app* (handler:site *app-routes*))
 
 (defun stop-server ()
